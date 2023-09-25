@@ -20,8 +20,8 @@ class AuthController extends ApiController
         try {
             // Validate request
             $request->validate([
-                'email' => 'required|string',
-                'password' => 'required|string'
+                'email' => 'required|email',
+                'password' => 'required'
             ]);
             // Check email
             $user = User::where('email', $request->email)->first();
