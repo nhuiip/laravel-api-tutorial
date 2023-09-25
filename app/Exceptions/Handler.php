@@ -24,14 +24,7 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->reportable(function (Throwable $e) {
-            switch ($e instanceof \Illuminate\Auth\AuthenticationException) {
-                case '401':
-                    return (new \App\Http\Controllers\Api\ApiController)->unauthorizedResponse();
-                    break;
-                case '403':
-                    return (new \App\Http\Controllers\Api\ApiController)->forbiddenResponse();
-                    break;
-            }
+           
         });
     }
 

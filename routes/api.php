@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteGroup;
@@ -28,5 +29,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/products/{id}', 'show')->middleware('abilities:read');
         Route::put('/products/{id}', 'update')->middleware('abilities:update');
         Route::delete('/products/{id}', 'destroy')->middleware('abilities:delete');
+    });
+    // group route for category
+    Route::controller(CategoryController::class)->group(function () {
+        Route::get('/categories', 'index')->middleware('abilities:read');
+        Route::post('/categories', 'store')->middleware('abilities:create');
+        Route::get('/categories/{id}', 'show')->middleware('abilities:read');
+        Route::put('/categories/{id}', 'update')->middleware('abilities:update');
+        Route::delete('/categories/{id}', 'destroy')->middleware('abilities:delete');
     });
 });
