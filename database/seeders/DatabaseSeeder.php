@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             $role = Role::create(['name' => $role]);
         }
 
-        $permissionData = array('Create', 'Read', 'Update', 'Delete');
+        $permissionData = array('create', 'read', 'update', 'delete');
         foreach ($permissionData as $permission) {
             $permission = Permission::create(['name' => $permission]);
         }
