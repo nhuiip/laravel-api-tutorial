@@ -24,7 +24,35 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->reportable(function (Throwable $e) {
-            //
+            switch ($e instanceof \Illuminate\Auth\AuthenticationException) {
+                case '401':
+                    return (new \App\Http\Controllers\Api\ApiController)->unauthorizedResponse();
+                    break;
+                case '403':
+                    return (new \App\Http\Controllers\Api\ApiController)->forbiddenResponse();
+                    break;
+            }
         });
+    }
+
+    // render method is used to return the response
+    // when a particular exception occurs
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof \Illuminate\Auth\AuthenticationException) {
+            return (new \App\Http\Controllers\Api\ApiController)->unauthorizedResponse();
+        }
+        if ($e instanceof \Illuminate\Auth\Access\AuthorizationException) {
+            return (new \App\Http\Controllers\Api\ApiController)->forbiddenResponse();
+        }
+        if ($e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+            return (new \App\Http\Controllers\Api\ApiController)->notFoundResponse();
+        }
+        if ($e instanceof \Illuminate\Database\QueryException) {
+            return (new \App\Http\Controllers\Api\ApiController)->errorResponse('Something went wrong', $e->getMessage(), 400);
+        }
+        if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+            return (new \App\Http\Controllers\Api\ApiController)->errorResponse('Something went wrong', $e->getMessage(), 500);
+        }
     }
 }

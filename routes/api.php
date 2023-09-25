@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProductController;
 use Illuminate\Http\Request;
+use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,8 +20,13 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    // Route::get('/user', function (Request $request) {
-    //     return $request->user();
-    // });
     Route::post('/logout', [AuthController::class, 'logout']);
+    // group route for product
+    Route::controller(ProductController::class)->group(function () {
+        Route::get('/products', 'index')->middleware('abilities:read');
+        Route::post('/products', 'store')->middleware('abilities:create');
+        Route::get('/products/{id}', 'show')->middleware('abilities:read');
+        Route::put('/products/{id}', 'update')->middleware('abilities:update');
+        Route::delete('/products/{id}', 'destroy')->middleware('abilities:delete');
+    });
 });

@@ -50,4 +50,24 @@ class ApiController extends Controller
 
         return response()->json($response, 401);
     }
+
+    public function notFoundResponse()
+    {
+        $response = [
+            'success' => false,
+            'message' => 'Resource not found',
+        ];
+
+        return response()->json($response, 404);
+    }
+
+    public function internalServerErrorResponse()
+    {
+        $response = [
+            'success' => false,
+            'message' => 'Something went wrong',
+        ];
+
+        return response()->json($response, 500);
+    }
 }
